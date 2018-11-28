@@ -7,6 +7,7 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <!-- 옵션 1. Java 기반으로 빈 정의를 하는 경우 class 를 명시 -->
     <context-param>
         <param-name>contextClass</param-name>
         <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
@@ -16,9 +17,17 @@
         <param-value>example.config.AppConfig</param-value>
     </context-param>
 
+    <!-- 옵션 2. xml 기반으로 빈 정의를 하는 경우
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+    -->
+
     <servlet>
         <servlet-name>app</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 옵션 1. Java 기반의 경우 아래를 사용 -->
         <init-param>
             <param-name>contextClass</param-name>
             <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
@@ -27,6 +36,14 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>example.config.WebMvcConfig</param-value>
         </init-param>
+        <!-- 옵션 2. XML을 사용하는 경우 임의의 빈 정의 파일을 지정하지 않으면
+            /WEB-INF/{servlet-name}-servlet.xml을 사용해서
+            컨텍스트를 만든다.
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/WEB-INF/app-servlet.xml</param-value>
+        </init-param>
+        -->
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
