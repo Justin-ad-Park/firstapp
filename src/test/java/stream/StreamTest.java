@@ -1,5 +1,6 @@
 package stream;
 
+import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -57,5 +59,53 @@ public class StreamTest {
 
 
     }
+
+    @Test
+    public void streamExample() {
+        List<String> list = Arrays.asList(
+                "This is a java book",
+                "Lambda Expressions",
+                "Java8 supports lambda expressions"
+        );
+
+        list.stream()
+                .filter(s->s.toLowerCase().indexOf("java")>=0)
+                .forEach(s->System.out.println(s));
+
+        double avg = Student.getStudentsStream()
+                .filter(s->s.getScore()>70)
+                .sorted(Comparator.reverseOrder())
+                .peek(s->System.out.println("Name : " +  s.getName() + ", Score : " + s.getScore()))
+                .mapToInt(Student::getScore)
+                .average().getAsDouble();
+
+        System.out.println("Average : " + avg);
+    }
+
+    @Test
+    public void streamExample4Map() {
+        List<Student> list = Student.getStudentsStream()
+                .filter(s->s.getGender() == Student.Gender.MALE)
+                .peek(s->System.out.println(s.getName() +  " " + s.getGender()))
+                .collect(Collectors.toList());
+
+        System.out.println(list);
+    }
+
+    @Test
+    public void steamExample4GroupingBy() {
+        Map<Student.Gender, List<Student>> groupingMap = Student.getStudentsStream()
+                .collect(Collectors.groupingBy(Student::getGender));
+
+        groupingMap.forEach((gender, list)-> System.out.println(gender.name() + " " + list) );
+
+        System.out.println("\n[MALE]");
+        groupingMap.get(Student.Gender.MALE).stream().forEach(s->System.out.print(s.getName() + ", "));
+        System.out.println("\n[FEMALE]");
+        groupingMap.get(Student.Gender.FEMALE).stream().forEach(s->System.out.print(s.getName() + ", "));
+
+    }
+
+
 
 }
