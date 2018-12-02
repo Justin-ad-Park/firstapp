@@ -21,14 +21,14 @@ public class TestStreamCollect {
         BiConsumer<MaleStudent, Student> accumulator = (ms, s)->ms.accumulate(s);
         BiConsumer<MaleStudent, MaleStudent> combiner = (ms1, ms2)->ms1.combine(ms2);
 
-        MaleStudent maleStudent = getStudentsSteam()
+        MaleStudent maleStudent = Student.getStudentsStream()
                 .filter(s->s.getGender() == Student.Gender.MALE)
                 .collect(supplier, accumulator, combiner);
         printLn("testCollect1", maleStudent);
 
 
         //Collect Method 2
-        maleStudent = getStudentsSteam()
+        maleStudent = Student.getStudentsStream()
                 .filter(s->s.getGender() == Student.Gender.MALE)
                 .collect(
                         ()->new MaleStudent()
@@ -39,7 +39,7 @@ public class TestStreamCollect {
 
 
         //Collect Method 3
-        maleStudent = getStudentsSteam()
+        maleStudent = Student.getStudentsStream()
                 .filter(s -> s.getGender() == Student.Gender.MALE)
                 .collect(MaleStudent::new, MaleStudent::accumulate, MaleStudent::combine);
 
@@ -50,13 +50,13 @@ public class TestStreamCollect {
     @Test
     public void groupingBy() {
         //Group by gender
-        Map<Student.Gender, List<Student>> mapBygender = getStudentsSteam()
+        Map<Student.Gender, List<Student>> mapBygender = Student.getStudentsStream()
                 .collect(Collectors.groupingBy(Student::getGender));
 
         System.out.println("Group By gender :");
         mapBygender.forEach((gender, students) -> System.out.println("\t[" + gender + "] : " + students));
 
-        Map<Student.City, List<String>> mapByCity = getStudentsSteam()
+        Map<Student.City, List<String>> mapByCity = Student.getStudentsStream()
                 .collect(
                         Collectors.groupingBy(
                                 Student::getCity,
@@ -74,7 +74,7 @@ public class TestStreamCollect {
     @Test
     public void averagingDouble() {
         //성별 평균 점수
-        Map<Student.Gender, Double> averageBygender = getStudentsSteam()
+        Map<Student.Gender, Double> averageBygender = Student.getStudentsStream()
                 .collect(
                         Collectors.groupingBy(
                                 Student::getGender,
@@ -88,7 +88,7 @@ public class TestStreamCollect {
 
 
         //성별로 모은 이름
-        Map<Student.Gender, String> nameBygender = getStudentsSteam()
+        Map<Student.Gender, String> nameBygender = Student.getStudentsStream()
                 .collect(
                         Collectors.groupingBy(
                                 Student::getGender,
@@ -104,19 +104,22 @@ public class TestStreamCollect {
                 -> System.out.println("\t[" + city + "] : " + names));
     }
 
+    /*
+        그룹핑 및 그룹핑된 결과에서 각 항목 정렬
+     */
     @Test
     public void sortingListsAfterGroupingBy() {
-        Map<Student.Gender , List<Student>> sortedListsByGender = getStudentsSteam()
+        //성별을 키로 학생 리스트를 그룹핑
+        Map<Student.Gender , List<Student>> sortedListsByGender = Student.getStudentsStream()
                 .collect(Collectors.groupingBy(Student::getGender));
 
         System.out.println("\nAfter grouping by city");
         sortedListsByGender.forEach( (city, names)
                 -> System.out.println("\t[" + city + "] : " + names));
 
-
+        //위에서 그룹핑된 맵의 각 리스트를 이름으로 정렬
         sortedListsByGender.values()
                 .forEach(list -> Collections.sort(list, Student::compareByName));
-
 
         System.out.println("\nSorting lists by names after grouping by city :");
         sortedListsByGender.forEach( (city, names)
@@ -138,17 +141,6 @@ public class TestStreamCollect {
         System.out.println("\nAre they all males? " + result + "\n");
     }
 
-    /*
-    테스트를 위한 스트림 생성
-     */
-    private Stream<Student> getStudentsSteam() {
-        return Arrays.asList(
-                new Student("Adam", 95, Student.Gender.MALE, Student.City.Seoul),
-                    new Student("Sunny", 85, Student.Gender.FEMALE, Student.City.Seoul),
-                    new Student("Justin", 80, Student.Gender.MALE, Student.City.Busan),
-                    new Student("Irene", 90, Student.Gender.FEMALE, Student.City.Busan)
 
-            ).stream();
-    }
 
 }

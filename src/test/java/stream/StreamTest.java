@@ -19,7 +19,7 @@ import static junit.framework.TestCase.assertEquals;
 public class StreamTest {
 
     @Test
-    public void testStream() throws Exception {
+    public void testStream() {
         String a = "a";
 
         assertEquals(a, "a");
