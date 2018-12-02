@@ -3,11 +3,10 @@ package stream;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,14 +22,14 @@ public class TestStreamCollect {
         BiConsumer<MaleStudent, MaleStudent> combiner = (ms1, ms2)->ms1.combine(ms2);
 
         MaleStudent maleStudent = getStudentsSteam()
-                .filter(s->s.getSex() == Student.Sex.MALE)
+                .filter(s->s.getGender() == Student.Gender.MALE)
                 .collect(supplier, accumulator, combiner);
         printLn("testCollect1", maleStudent);
 
 
         //Collect Method 2
         maleStudent = getStudentsSteam()
-                .filter(s->s.getSex() == Student.Sex.MALE)
+                .filter(s->s.getGender() == Student.Gender.MALE)
                 .collect(
                         ()->new MaleStudent()
                         , (r, t)->r.accumulate(t)
@@ -41,7 +40,7 @@ public class TestStreamCollect {
 
         //Collect Method 3
         maleStudent = getStudentsSteam()
-                .filter(s -> s.getSex() == Student.Sex.MALE)
+                .filter(s -> s.getGender() == Student.Gender.MALE)
                 .collect(MaleStudent::new, MaleStudent::accumulate, MaleStudent::combine);
 
         printLn("testCollect3", maleStudent);
@@ -50,12 +49,12 @@ public class TestStreamCollect {
 
     @Test
     public void groupingBy() {
-        //Group by Sex
-        Map<Student.Sex, List<Student>> mapBySex = getStudentsSteam()
-                .collect(Collectors.groupingBy(Student::getSex));
+        //Group by gender
+        Map<Student.Gender, List<Student>> mapBygender = getStudentsSteam()
+                .collect(Collectors.groupingBy(Student::getGender));
 
-        System.out.println("Group By Sex :");
-        mapBySex.forEach((sex, students) -> System.out.println("\t[" + sex + "] : " + students));
+        System.out.println("Group By gender :");
+        mapBygender.forEach((gender, students) -> System.out.println("\t[" + gender + "] : " + students));
 
         Map<Student.City, List<String>> mapByCity = getStudentsSteam()
                 .collect(
@@ -72,12 +71,69 @@ public class TestStreamCollect {
 
     }
 
+    @Test
+    public void averagingDouble() {
+        //성별 평균 점수
+        Map<Student.Gender, Double> averageBygender = getStudentsSteam()
+                .collect(
+                        Collectors.groupingBy(
+                                Student::getGender,
+                                Collectors.averagingDouble(Student::getScore)
+                        )
+                );
+
+        System.out.println("\n[AveragingDouble]Group By gender :");
+        averageBygender.forEach( (gender, average)
+                -> System.out.println("\t[" + gender + "] : " + average));
+
+
+        //성별로 모은 이름
+        Map<Student.Gender, String> nameBygender = getStudentsSteam()
+                .collect(
+                        Collectors.groupingBy(
+                                Student::getGender,
+                                Collectors.mapping(
+                                        Student::getName,
+                                        Collectors.joining(",")
+                                )
+                        )
+                );
+
+        System.out.println("\nGroup By City :");
+        nameBygender.forEach( (city, names)
+                -> System.out.println("\t[" + city + "] : " + names));
+    }
+
+    @Test
+    public void sortingListsAfterGroupingBy() {
+        Map<Student.Gender , List<Student>> sortedListsByGender = getStudentsSteam()
+                .collect(Collectors.groupingBy(Student::getGender));
+
+        System.out.println("\nAfter grouping by city");
+        sortedListsByGender.forEach( (city, names)
+                -> System.out.println("\t[" + city + "] : " + names));
+
+
+        sortedListsByGender.values()
+                .forEach(list -> Collections.sort(list, Student::compareByName));
+
+
+        System.out.println("\nSorting lists by names after grouping by city :");
+        sortedListsByGender.forEach( (city, names)
+                -> System.out.println("\t[" + city + "] : " + names));
+
+    }
+
+    static <T> Collector<T,?,List<T>> toSortedList(Comparator<? super T> c) {
+        return Collectors.collectingAndThen(
+                Collectors.toCollection(ArrayList::new), l->{ l.sort(c); return l; } );
+    }
 
     private void printLn(String methodName, MaleStudent maleStudent) {
         System.out.println("===" + methodName + "===");
         boolean result = maleStudent.getList().stream()
                 .peek(s->System.out.print(s.getName() + " "))
-                .allMatch(a->a.getSex() == Student.Sex.MALE);
+                .allMatch(a->a.getGender() == Student.Gender.MALE);
 
         System.out.println("\nAre they all males? " + result + "\n");
     }
@@ -87,10 +143,10 @@ public class TestStreamCollect {
      */
     private Stream<Student> getStudentsSteam() {
         return Arrays.asList(
-                new Student("Adam", 12, Student.Sex.MALE, Student.City.Seoul),
-                    new Student("Sunny", 17, Student.Sex.FEMALE, Student.City.Seoul),
-                    new Student("Justin", 13, Student.Sex.MALE, Student.City.Busan),
-                    new Student("Irene", 8, Student.Sex.FEMALE, Student.City.Busan)
+                new Student("Adam", 95, Student.Gender.MALE, Student.City.Seoul),
+                    new Student("Sunny", 85, Student.Gender.FEMALE, Student.City.Seoul),
+                    new Student("Justin", 80, Student.Gender.MALE, Student.City.Busan),
+                    new Student("Irene", 90, Student.Gender.FEMALE, Student.City.Busan)
 
             ).stream();
     }
