@@ -8,6 +8,14 @@
         </encoder>
     </appender>
 
+    <appender name="simpleConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                ▶[Console]%-5level %d{HH:mm:ss:.SSS} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/log/spring/firstapp-log.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -28,11 +36,11 @@
     </logger>
 
     <logger name="stream" level="DEBUG">
-        <appender-ref ref="file" />
+        <appender-ref ref="simpleConsole" />
     </logger>
 
     <!-- console로 이름을 가진 appender를 info 레벨로 찍겠다. -->
-    <root level="DEBUG">
-        <appender-ref ref="console" />
+    <root level="ERROR">
+        <appender-ref ref="file" />
     </root>
 </configuration>

@@ -1,13 +1,10 @@
-package stream;
+package stream.test;
 
-import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
 
-import com.oracle.tools.packager.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 
 import java.util.Arrays;
@@ -70,26 +67,26 @@ public class StreamTest {
 
         list.stream()
                 .filter(s->s.toLowerCase().indexOf("java")>=0)
-                .forEach(s->System.out.println(s));
+                .forEach(s->log.debug(s));
 
         double avg = Student.getStudentsStream()
                 .filter(s->s.getScore()>70)
                 .sorted(Comparator.reverseOrder())
-                .peek(s->System.out.println("Name : " +  s.getName() + ", Score : " + s.getScore()))
+                .peek(s->log.debug("Name : " +  s.getName() + ", Score : " + s.getScore()))
                 .mapToInt(Student::getScore)
                 .average().getAsDouble();
 
-        System.out.println("Average : " + avg);
+        log.debug("Average : " + avg);
     }
 
     @Test
     public void streamExample4Map() {
         List<Student> list = Student.getStudentsStream()
                 .filter(s->s.getGender() == Student.Gender.MALE)
-                .peek(s->System.out.println(s.getName() +  " " + s.getGender()))
+                .peek(s->log.debug(s.getName() +  " " + s.getGender()))
                 .collect(Collectors.toList());
 
-        System.out.println(list);
+        log.debug(list.toString());
     }
 
     @Test
@@ -97,7 +94,7 @@ public class StreamTest {
         Map<Student.Gender, List<Student>> groupingMap = Student.getStudentsStream()
                 .collect(Collectors.groupingBy(Student::getGender));
 
-        groupingMap.forEach((gender, list)-> System.out.println(gender.name() + " " + list) );
+        groupingMap.forEach((gender, list)-> log.debug(gender.name() + " " + list) );
 
         System.out.println("\n[MALE]");
         groupingMap.get(Student.Gender.MALE).stream().forEach(s->System.out.print(s.getName() + ", "));

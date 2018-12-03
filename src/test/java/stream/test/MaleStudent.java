@@ -1,6 +1,5 @@
-package stream;
+package stream.test;
 
-import com.oracle.tools.packager.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -12,17 +11,17 @@ public class MaleStudent {
 
     public MaleStudent() {
         list = new ArrayList<Student>();
-        System.out.println("[" + Thread.currentThread().getName() + "] MailStudent() Constructor");
+        log.debug("[" + Thread.currentThread().getName() + "] MailStudent() Constructor");
     }
 
     public void accumulate(Student student) {
         list.add(student);
-        System.out.println("[" + Thread.currentThread().getName() + "] accumulate()");
+        log.debug("[" + Thread.currentThread().getName() + "] accumulate()");
     }
 
     public void combine(MaleStudent other) {
         list.addAll(other.getList());
-        System.out.println("[" + Thread.currentThread().getName() + "] combile()");
+        log.debug("[" + Thread.currentThread().getName() + "] combile()");
     }
 
     public List<Student> getList() {

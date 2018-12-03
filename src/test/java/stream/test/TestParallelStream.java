@@ -1,4 +1,4 @@
-package stream;
+package stream.test;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class TestParallelStream {
         long end = System.nanoTime();
         long runTime = end - start;
 
-        System.out.println("Single Stream untime    : " + runTime);
+        log.debug("Single Stream untime    : " + runTime);
 
         start = System.nanoTime();
         Student.getStudentsParallelStream()
@@ -36,7 +36,7 @@ public class TestParallelStream {
         end = System.nanoTime();
         runTime = end - start;
 
-        System.out.println("Parallel Stream Runtime : " + runTime);
+        log.debug("Parallel Stream Runtime : " + runTime);
 
 
     }
