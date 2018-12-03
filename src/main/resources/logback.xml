@@ -35,7 +35,7 @@
         <appender-ref ref="console" />
     </logger>
 
-    <logger name="stream" level="DEBUG">
+    <logger name="stream.test" level="DEBUG">
         <appender-ref ref="simpleConsole" />
     </logger>
 
