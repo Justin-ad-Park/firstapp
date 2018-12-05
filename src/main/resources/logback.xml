@@ -11,16 +11,16 @@
     <appender name="simpleConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                ▶[Console]%-5level %d{HH:mm:ss:.SSS} - %msg%n
+                ▶[SConsole]%-5level %d{HH:mm:ss:.SSS} - %msg%n
             </pattern>
         </encoder>
     </appender>
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/log/spring/firstapp-log.log</file>
+        <file>/log/spring/firstapp.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/log/spring/firstapp-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <maxHistory>10</maxHistory>
         </rollingPolicy>
 
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -36,6 +36,10 @@
     </logger>
 
     <logger name="stream.test" level="DEBUG">
+        <appender-ref ref="simpleConsole" />
+    </logger>
+
+    <logger name="lambda.test" level="DEBUG">
         <appender-ref ref="simpleConsole" />
     </logger>
 
