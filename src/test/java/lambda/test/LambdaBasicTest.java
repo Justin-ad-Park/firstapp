@@ -38,10 +38,10 @@ public class LambdaBasicTest {
 
         fi2.method(2);
 
-        fi2 = (x) -> { log.debug("Result : " + x*6); };
+        fi2 = (x) -> { log.debug("Result : " + x * 6); };
         fi2.method(2);
 
-        fi2 = x -> log.debug("Result : " + x*7);
+        fi2 = x -> log.debug("Result : " + x * 7);
         fi2.method(2);
     }
 
@@ -70,6 +70,9 @@ public class LambdaBasicTest {
 
     }
 
+    /** 람다식에서 this는 Inner 객체를 참조함
+     * 바깥 객체의 참조를 얻기 위해서는 클래스명.this 를 사용함
+     */
     class Inner {
         String innerField = "Inner Field";
 

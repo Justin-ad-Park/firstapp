@@ -16,10 +16,6 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>example.config.AppConfig</param-value>
     </context-param>
-    <context-param>
-        <param-name/>
-        <param-value/>
-    </context-param>
 
     <!-- 옵션 2. xml 기반으로 빈 정의를 하는 경우
     <context-param>
