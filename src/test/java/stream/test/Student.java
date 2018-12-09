@@ -39,7 +39,7 @@ public class Student implements Comparable<Student> {
     }
 
     /* 테스트를 위한 스트림 생성 */
-    private static List<Student> getStudentsList() {
+    public static List<Student> getStudentsList() {
         return Arrays.asList(
                 new Student("Adam", 95, Gender.MALE, City.Seoul),
                 new Student("Sunny", 85, Gender.FEMALE, City.Seoul),
