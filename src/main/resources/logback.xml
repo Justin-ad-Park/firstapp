@@ -43,6 +43,10 @@
         <appender-ref ref="simpleConsole" />
     </logger>
 
+    <logger name="test" level="DEBUG">
+        <appender-ref ref="simpleConsole" />
+    </logger>
+
     <!-- console로 이름을 가진 appender를 info 레벨로 찍겠다. -->
     <root level="ERROR">
         <appender-ref ref="file" />
