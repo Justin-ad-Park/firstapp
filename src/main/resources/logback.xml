@@ -30,6 +30,10 @@
         </encoder>
     </appender>
 
+    <logger name="example" level="DEBUG">
+        <appender-ref ref="simpleConsole" />
+    </logger>
+
     <!-- 패키지 안에 있는 것들 org.springframework 패키지로 시작하는 것은 console에 INFO로 찍겠다. -->
     <logger name="org.springframework" level="DEBUG">
         <appender-ref ref="console" />
