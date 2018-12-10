@@ -12,8 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
-    public void configureViewResolvers(ViewResolverRegistry registry)
-    {
+    public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp();
     }
 }
