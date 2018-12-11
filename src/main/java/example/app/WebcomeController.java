@@ -18,11 +18,20 @@ public class WebcomeController {
 
 
     @NoCache
-    @RequestMapping("/aoptest")
-    public ModelAndView home(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    @RequestMapping("/AOP4NoCache")
+    public ModelAndView testAOP4NoCache(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
         ModelAndView mav = new ModelAndView("echo/aop");
         mav.addObject("aopData", "AOP Test");
         return mav;
     }
+
+    @RequestMapping("/withoutAOP")
+    public ModelAndView testAOP(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+
+        ModelAndView mav = new ModelAndView("echo/aop");
+        mav.addObject("aopData", "AOP Test");
+        return mav;
+    }
+
 }
