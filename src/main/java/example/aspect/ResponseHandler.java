@@ -39,9 +39,8 @@ public class ResponseHandler {
 
         Object[] args = jp.getArgs();
 
-        for(Object arg : args)
-        {
-            if(arg instanceof HttpServletResponse) {
+        for (Object arg : args) {
+            if (arg instanceof HttpServletResponse) {
                 HttpServletResponse response = (HttpServletResponse) arg;
 
                 response.setHeader("Cache-Control", "no-cache");
