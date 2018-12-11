@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 @Aspect
 @Component
 @Slf4j
-public class ResponseHeaderControlAspect {
+public class ResponseHandler {
 
     /*
     @Before("execution(* *..*Controller.*(..))")
@@ -29,8 +29,8 @@ public class ResponseHeaderControlAspect {
      * Test URL : http://localhost:8080/aoptest
      * @param jp
      */
-    @Before("@annotation(example.aspect.annotation.HeaderCacheControlNoCache)")
-    public void endLog(JoinPoint jp) {
+    @Before("@annotation(example.aspect.annotation.NoCache)")
+    public void setHeaderNoCache(JoinPoint jp) {
 //        Object targetObject = jp.getTarget();
 //        log.debug("[AOP Object info : " + targetObject.getClass().getName());
 //
@@ -48,9 +48,9 @@ public class ResponseHeaderControlAspect {
                 response.addHeader("Cache-Control","no-store");
                 response.setHeader("Pragma","no-cache");
                 response.setDateHeader("Expires",1L);
-                break;
+
+                return;
             }
         }
-
     }
 }

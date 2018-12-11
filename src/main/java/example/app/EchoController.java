@@ -1,6 +1,6 @@
 package example.app;
 
-import example.aspect.annotation.HeaderCacheControlNoCache;
+import example.aspect.annotation.NoCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequestMapping("echo")
 public class EchoController {
 
-    @HeaderCacheControlNoCache
+    @NoCache
     @RequestMapping(method = RequestMethod.GET)
     public String viewInput(Model model) {
         log.debug("EchoController viewInput");

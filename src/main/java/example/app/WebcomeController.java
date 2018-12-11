@@ -1,6 +1,6 @@
 package example.app;
 
-import example.aspect.annotation.HeaderCacheControlNoCache;
+import example.aspect.annotation.NoCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +17,7 @@ public class WebcomeController {
     }
 
 
-    @HeaderCacheControlNoCache
+    @NoCache
     @RequestMapping("/aoptest")
     public ModelAndView home(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
