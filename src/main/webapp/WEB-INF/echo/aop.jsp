@@ -12,6 +12,9 @@
 </head>
 <body>
 <h2>AOP Test</h2>
+<div>
+    <a href="<c:url value='/' />">Go to home</a>
+</div>
 
 <%
     Collection<String> headers = response.getHeaderNames();
@@ -29,9 +32,5 @@
        <%=header + " : " + response.getHeader(header)%> <br>
 <%  }
 %>
-
-<div>
-    <a href="<c:url value='/' />">Go to home</a>
-</div>
 </body>
 </html>
